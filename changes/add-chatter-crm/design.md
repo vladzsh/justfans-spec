@@ -212,7 +212,7 @@ Payload `/api/monitor/snapshot/`:
 |---|---|---|
 | `message.new` | `{message: Message, conversation: Conversation}` | Любое новое сообщение в любом диалоге чатера — и от фана, и собственное (подтверждение: клиент матчит по `client_msg_id`) |
 | `conversation.read` | `{conversation_id}` | Диалог отмечен прочитанным (синхронизация вкладок) |
-| `error` | `{code, detail}` | Невалидный `message.send` (чужой диалог, пустой текст, PPV без цены) |
+| `error` | `{code, detail, client_msg_id?}` | Невалидный `message.send` (чужой диалог, пустой текст, PPV без цены); `client_msg_id` — для соотнесения с оптимистичным сообщением на клиенте |
 
 Сервер → клиент (тимлиду, группа `monitor`):
 
