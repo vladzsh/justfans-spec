@@ -4,35 +4,35 @@
 
 ## 1. Backend: каркас
 
-- [ ] 1.1 Инициализировать Django-проект в `backend/` (`justfans-backend`): `config` + приложения `accounts`, `chat`, `monitor`; настройки через env (django-environ или os.environ), PostgreSQL, Redis channel layer, DRF (SessionAuthentication), Channels + Daphne в `asgi.py`
-- [ ] 1.2 Кастомная модель `accounts.User` с `role` (chatter/teamlead) и `display_name`; `AUTH_USER_MODEL`; миграция
-- [ ] 1.3 Модели `ContentModel`, `Fan`, `Conversation`, `Message` по ER-схеме design.md: constraints (unique fan+model, unique conversation+client_msg_id, check ppv_price), индекс (conversation_id, id); миграции
-- [ ] 1.4 Настроить pytest (pytest-django, pytest-asyncio) и заготовку фабрик/фикстур
+- [x] 1.1 Инициализировать Django-проект в `backend/` (`justfans-backend`): `config` + приложения `accounts`, `chat`, `monitor`; настройки через env (django-environ или os.environ), PostgreSQL, Redis channel layer, DRF (SessionAuthentication), Channels + Daphne в `asgi.py`
+- [x] 1.2 Кастомная модель `accounts.User` с `role` (chatter/teamlead) и `display_name`; `AUTH_USER_MODEL`; миграция
+- [x] 1.3 Модели `ContentModel`, `Fan`, `Conversation`, `Message` по ER-схеме design.md: constraints (unique fan+model, unique conversation+client_msg_id, check ppv_price), индекс (conversation_id, id); миграции
+- [x] 1.4 Настроить pytest (pytest-django, pytest-asyncio) и заготовку фабрик/фикстур
 
 ## 2. Backend: auth и REST
 
-- [ ] 2.1 Эндпоинты `POST /api/auth/login/`, `POST /api/auth/logout/`, `GET /api/auth/me/`; пермишены по ролям (IsChatter / IsTeamlead) — спека `auth`
-- [ ] 2.2 `GET /api/config/` с порогами из env (`OVERDUE_SECONDS`, `PRESENCE_GRACE_SECONDS`, `HEARTBEAT_SECONDS`)
-- [ ] 2.3 `GET /api/conversations/` — список диалогов чатера с payload из design.md, сортировка по `last_message_at DESC`
-- [ ] 2.4 `GET /api/conversations/{id}/messages/` — cursor-пагинация `before_id`/`limit`, `has_more`; 404 на чужой диалог — спека `chat`
-- [ ] 2.5 `POST /api/conversations/{id}/read/` — обнуление `unread_count` (select_for_update) + `conversation.read` в группу чатера через on_commit
-- [ ] 2.6 `GET /api/sync/?after_id=` — сообщения `id > after_id` по всем диалогам чатера (ASC, cap 500) + снапшоты диалогов — спека `realtime`
+- [x] 2.1 Эндпоинты `POST /api/auth/login/`, `POST /api/auth/logout/`, `GET /api/auth/me/`; пермишены по ролям (IsChatter / IsTeamlead) — спека `auth`
+- [x] 2.2 `GET /api/config/` с порогами из env (`OVERDUE_SECONDS`, `PRESENCE_GRACE_SECONDS`, `HEARTBEAT_SECONDS`)
+- [x] 2.3 `GET /api/conversations/` — список диалогов чатера с payload из design.md, сортировка по `last_message_at DESC`
+- [x] 2.4 `GET /api/conversations/{id}/messages/` — cursor-пагинация `before_id`/`limit`, `has_more`; 404 на чужой диалог — спека `chat`
+- [x] 2.5 `POST /api/conversations/{id}/read/` — обнуление `unread_count` (select_for_update) + `conversation.read` в группу чатера через on_commit
+- [x] 2.6 `GET /api/sync/?after_id=` — сообщения `id > after_id` по всем диалогам чатера (ASC, cap 500) + снапшоты диалогов — спека `realtime`
 
 ## 3. Backend: доменные сервисы и WS
 
-- [ ] 3.1 Сервис создания сообщения (общий для чатера и фана): `transaction.atomic` + `select_for_update` диалога, обновление `last_message_at` / `unread_count` / `awaiting_reply_since` по правилам спеки `chat`, идемпотентность по `client_msg_id`, рассылка `message.new` + `monitor.update` через `transaction.on_commit`
-- [ ] 3.2 Consumer `/ws/`: auth по сессии (4401 без неё), подписка chatter → `chatter.{id}`, teamlead → `monitor`; обработка `message.send` (валидация: непустой text, ppv_price для ppv, свой диалог → иначе `error`) и `ping`/`pong`
-- [ ] 3.3 Presence: запись `last_seen` в Redis (SETEX, TTL = grace) на connect и каждый ping; `monitor.update` в группу `monitor` на connect/disconnect — спека `teamlead-monitor`
-- [ ] 3.4 `GET /api/monitor/snapshot/` — чатеры с `connected`, `last_seen`, `dialogs_count`, `waiting[]`
-- [ ] 3.5 `POST /api/demo/fan-message/` — эмуляция фана (случайный/указанный диалог, случайная фраза) через сервис из 3.1
+- [x] 3.1 Сервис создания сообщения (общий для чатера и фана): `transaction.atomic` + `select_for_update` диалога, обновление `last_message_at` / `unread_count` / `awaiting_reply_since` по правилам спеки `chat`, идемпотентность по `client_msg_id`, рассылка `message.new` + `monitor.update` через `transaction.on_commit`
+- [x] 3.2 Consumer `/ws/`: auth по сессии (4401 без неё), подписка chatter → `chatter.{id}`, teamlead → `monitor`; обработка `message.send` (валидация: непустой text, ppv_price для ppv, свой диалог → иначе `error`) и `ping`/`pong`
+- [x] 3.3 Presence: запись `last_seen` в Redis (SETEX, TTL = grace) на connect и каждый ping; `monitor.update` в группу `monitor` на connect/disconnect — спека `teamlead-monitor`
+- [x] 3.4 `GET /api/monitor/snapshot/` — чатеры с `connected`, `last_seen`, `dialogs_count`, `waiting[]`
+- [x] 3.5 `POST /api/demo/fan-message/` — эмуляция фана (случайный/указанный диалог, случайная фраза) через сервис из 3.1
 
 ## 4. Backend: сидер и тесты
 
-- [ ] 4.1 `manage.py seed`: 2–3 модели, 3–4 чатера (`chatter1`/`chatter2`/... + общий пароль), 1 тимлид, диалоги с историей (текст + PPV), часть с активным `awaiting_reply_since` и непрочитанными; идемпотентность повторного запуска
-- [ ] 4.2 Тесты метрики ожидания: фан пишет → таймер ставится один раз; чатер отвечает → сбрасывается; unread инкремент/сброс
-- [ ] 4.3 Тесты resync: `/api/sync/` возвращает ровно пропущенное (без дублей и потерь), пагинация `before_id` без пересечений
-- [ ] 4.4 Тесты идемпотентности отправки: повтор `client_msg_id` не создаёт дубль; тест «события не уходят при откате транзакции» (on_commit)
-- [ ] 4.5 Тест WS-флоу через Channels `WebsocketCommunicator`: connect → message.send → message.new обеим группам; 4401 без сессии
+- [x] 4.1 `manage.py seed`: 2–3 модели, 3–4 чатера (`chatter1`/`chatter2`/... + общий пароль), 1 тимлид, диалоги с историей (текст + PPV), часть с активным `awaiting_reply_since` и непрочитанными; идемпотентность повторного запуска
+- [x] 4.2 Тесты метрики ожидания: фан пишет → таймер ставится один раз; чатер отвечает → сбрасывается; unread инкремент/сброс
+- [x] 4.3 Тесты resync: `/api/sync/` возвращает ровно пропущенное (без дублей и потерь), пагинация `before_id` без пересечений
+- [x] 4.4 Тесты идемпотентности отправки: повтор `client_msg_id` не создаёт дубль; тест «события не уходят при откате транзакции» (on_commit)
+- [x] 4.5 Тест WS-флоу через Channels `WebsocketCommunicator`: connect → message.send → message.new обеим группам; 4401 без сессии
 
 ## 5. Frontend: каркас и auth
 
