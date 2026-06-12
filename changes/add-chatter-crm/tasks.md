@@ -36,29 +36,29 @@
 
 ## 5. Frontend: каркас и auth
 
-- [ ] 5.1 Инициализировать Vite + Vue 3 (Composition API) + Pinia + Vue Router + Vitest в `frontend/` (`justfans-frontend`); dev-proxy `/api` и `/ws` на backend
-- [ ] 5.2 Стор `auth` + страница логина; восстановление сессии через `/api/auth/me/`; маршрутизация по роли (chatter → /chat, teamlead → /monitor), guards
-- [ ] 5.3 WS-сервис: singleton-подключение к `/ws/`, экспоненциальный backoff с jitter, heartbeat `ping` по `heartbeat_seconds`, индикатор состояния соединения, диспетчеризация событий в сторы
+- [x] 5.1 Инициализировать Vite + Vue 3 (Composition API) + Pinia + Vue Router + Vitest в `frontend/` (`justfans-frontend`); dev-proxy `/api` и `/ws` на backend
+- [x] 5.2 Стор `auth` + страница логина; восстановление сессии через `/api/auth/me/`; маршрутизация по роли (chatter → /chat, teamlead → /monitor), guards
+- [x] 5.3 WS-сервис: singleton-подключение к `/ws/`, экспоненциальный backoff с jitter, heartbeat `ping` по `heartbeat_seconds`, индикатор состояния соединения, диспетчеризация событий в сторы
 
 ## 6. Frontend: рабочее место чатера
 
-- [ ] 6.1 Стор `conversations` + список диалогов: аватары, превью последнего сообщения, время, бейдж непрочитанных, индикатор ожидания фана; live-обновление от `message.new`
-- [ ] 6.2 Стор `messages` + окно переписки: история с подгрузкой старых при скролле вверх (`before_id`, сохранение позиции скролла), стили fan/chatter, отметка PPV с ценой
-- [ ] 6.3 Отправка: обычное и PPV (поле цены), оптимистичное отображение с `client_msg_id`, подтверждение по `message.new`, ресенд после reconnect
-- [ ] 6.4 Resync: после reconnect — `GET /api/sync/?after_id=`, merge с дедупликацией по `message.id`, перезапись снапшотов диалогов
-- [ ] 6.5 Mark-read: при открытии диалога и при `message.new` в открытый диалог; обработка `conversation.read` (вкладки)
-- [ ] 6.6 Кнопка «симулировать сообщение фана» в открытом диалоге (вызов `/api/demo/fan-message/`)
+- [x] 6.1 Стор `conversations` + список диалогов: аватары, превью последнего сообщения, время, бейдж непрочитанных, индикатор ожидания фана; live-обновление от `message.new`
+- [x] 6.2 Стор `messages` + окно переписки: история с подгрузкой старых при скролле вверх (`before_id`, сохранение позиции скролла), стили fan/chatter, отметка PPV с ценой
+- [x] 6.3 Отправка: обычное и PPV (поле цены), оптимистичное отображение с `client_msg_id`, подтверждение по `message.new`, ресенд после reconnect
+- [x] 6.4 Resync: после reconnect — `GET /api/sync/?after_id=`, merge с дедупликацией по `message.id`, перезапись снапшотов диалогов
+- [x] 6.5 Mark-read: при открытии диалога и при `message.new` в открытый диалог; обработка `conversation.read` (вкладки)
+- [x] 6.6 Кнопка «симулировать сообщение фана» в открытом диалоге (вызов `/api/demo/fan-message/`)
 
 ## 7. Frontend: монитор тимлида
 
-- [ ] 7.1 Стор `monitor`: снапшот при входе и после reconnect, применение `monitor.update`
-- [ ] 7.2 Дашборд: чатеры с online/offline (вычисление по `last_seen` + grace локальным тикером), число диалогов, список ожидающих с таймером ожидания
-- [ ] 7.3 Подсветка просрочки `> overdue_seconds` локальным тикером + счётчик просрочек по чатеру — спека `teamlead-monitor`
+- [x] 7.1 Стор `monitor`: снапшот при входе и после reconnect, применение `monitor.update`
+- [x] 7.2 Дашборд: чатеры с online/offline (вычисление по `last_seen` + grace локальным тикером), число диалогов, список ожидающих с таймером ожидания
+- [x] 7.3 Подсветка просрочки `> overdue_seconds` локальным тикером + счётчик просрочек по чатеру — спека `teamlead-monitor`
 
 ## 8. Frontend: тесты
 
-- [ ] 8.1 Vitest: стор `messages` — дедуп по id при merge resync, упорядочивание, merge страницы пагинации с live-сообщениями
-- [ ] 8.2 Vitest: стор `conversations` — инкремент/сброс непрочитанных, обновление превью; стор `monitor` — вычисление offline и просрочки по timestamp + порогу
+- [x] 8.1 Vitest: стор `messages` — дедуп по id при merge resync, упорядочивание, merge страницы пагинации с live-сообщениями
+- [x] 8.2 Vitest: стор `conversations` — инкремент/сброс непрочитанных, обновление превью; стор `monitor` — вычисление offline и просрочки по timestamp + порогу
 
 ## 9. Инфраструктура и сдача
 
