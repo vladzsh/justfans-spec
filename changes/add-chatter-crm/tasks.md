@@ -65,4 +65,4 @@
 - [x] 9.1 Dockerfile backend (Daphne) и frontend (multi-stage: build SPA → nginx со статикой и прокси `/api`, `/ws`)
 - [x] 9.2 `docker-compose.yml` в `justfans-backend`: db, redis, backend (миграции на старте), frontend (build из git URL `justfans-frontend`); `.env.example` с порогами
 - [x] 9.3 README backend: запуск, порты, учётки из сидера, эмуляция фана (кнопка + curl), env-пороги, ссылка на деплой и на репо спецификации; README frontend: dev-запуск
-- [ ] 9.4 Деплой на Railway: PostgreSQL, Redis, backend (release: migrate + seed), frontend-nginx публичный с прокси по private network; проверить вход и realtime на стенде; ссылку — в README
+- [x] 9.4 Деплой на Railway: PostgreSQL, Redis, backend (release: migrate + seed), frontend-nginx публичный с прокси по private network; проверить вход и realtime на стенде; ссылку — в README
