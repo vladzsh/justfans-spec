@@ -232,15 +232,17 @@ sequenceDiagram
     participant R as Redis (channel layer)
     participant T as SPA (тимлид)
 
-    C->>WS: message.send {conversation_id, text, kind, client_msg_id}
-    WS->>DB: BEGIN; SELECT conversation FOR UPDATE
-    WS->>DB: INSERT message; UPDATE conversation (last_message_at, awaiting_reply_since=NULL)
+    C->>WS: message.send
+    WS->>DB: BEGIN
+    WS->>DB: SELECT conversation FOR UPDATE
+    WS->>DB: INSERT message
+    WS->>DB: UPDATE conversation
     WS->>DB: COMMIT
-    Note over WS: transaction.on_commit →
-    WS->>R: group_send chatter.{id}: message.new
-    WS->>R: group_send monitor: monitor.update
-    R-->>C: message.new (клиент матчит client_msg_id,<br/>заменяет оптимистичное сообщение)
-    R-->>T: monitor.update (таймер ожидания фана сброшен)
+    Note over WS: transaction.on_commit
+    WS->>R: group_send chatter.{id}
+    WS->>R: group_send monitor
+    R-->>C: message.new
+    R-->>T: monitor.update
 ```
 
 То же для входящего сообщения фана (`POST /api/demo/fan-message/`): в той же транзакции `unread_count += 1`, `awaiting_reply_since = now()` (если был `NULL`), затем `on_commit` — рассылка тех же двух событий.
@@ -253,14 +255,13 @@ sequenceDiagram
     participant N as nginx
     participant B as Backend
 
-    Note over C: WS разорвался. last_id = max(message.id) из сторов
-    C->>N: reconnect /ws/ (экспоненциальный backoff + jitter)
+    Note over C: WS disconnected
+    C->>N: reconnect /ws/
     N->>B: upgrade
-    B-->>C: connected (группа chatter.{id} подписана)
-    C->>B: GET /api/sync/?after_id={last_id}
-    B-->>C: {messages: [id > last_id], conversations: [...]}
-    Note over C: merge по message.id (дедуп),<br/>снапшоты conversations перезаписывают стор
-    Note over C: события, пришедшие по WS во время sync,<br/>тоже дедупятся по id — порядок безопасен
+    B-->>C: connected
+    C->>B: GET /api/sync/
+    B-->>C: {messages, conversations}
+    Note over C: merge and deduplicate
 ```
 
 Подписка на группу происходит **до** запроса sync — сообщение, созданное между подпиской и ответом sync, придёт обоими путями и схлопнется дедупом. Потерь нет: всё, что старше — в ответе sync; всё, что новее — в группе.
