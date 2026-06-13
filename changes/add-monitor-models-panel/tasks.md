@@ -13,8 +13,8 @@
 
 ## 2. Frontend
 
-- [ ] 2.1 Обновить стор `monitor` — применение `monitor.update`: читать `event.chatter` вместо корня payload; добавить поле `models` в состояние
-- [ ] 2.2 Обновить REST-снапшот (`GET /api/monitor/snapshot/`): сохранять `models` в стор при загрузке и после reconnect
-- [ ] 2.3 Компонент панели моделей: таблица/список моделей с `name`, `avatar`, `dialogs_count`, `waiting.length`; подсветка просрочки по `waiting_since` + `overdue_seconds` локальным тикером
-- [ ] 2.4 Интеграция панели моделей в страницу `/monitor` рядом с панелью чатеров
-- [ ] 2.5 Vitest: стор `monitor` — применение `monitor.update` с новой формой payload; модель с нулём ожидающих отображается; модель с ожидающими попадает в `waiting`
+- [x] 2.1 Обновить стор `monitor` — применение `monitor.update`: читать `event.chatter` вместо корня payload; добавить поле `models` в состояние
+- [x] 2.2 Обновить REST-снапшот (`GET /api/monitor/snapshot/`): сохранять `models` в стор при загрузке и после reconnect
+- [x] 2.3 Компонент панели моделей: таблица/список моделей с `name`, `avatar`, `dialogs_count`, `waiting.length`; подсветка просрочки по `waiting_since` + `overdue_seconds` локальным тикером
+- [x] 2.4 Интеграция панели моделей в страницу `/monitor` рядом с панелью чатеров
+- [x] 2.5 Vitest: стор `monitor` — применение `monitor.update` с новой формой payload; модель с нулём ожидающих отображается; модель с ожидающими попадает в `waiting`
